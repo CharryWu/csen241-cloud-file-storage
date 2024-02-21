@@ -1,0 +1,18 @@
+/* Basic styling for hero section and features */
+.hero {
+    text-align: center;
+    padding: 2rem;
+}
+
+.features ul {
+    list-style: none;
+    padding: 0;
+}
+
+.features li {
+    margin-bottom: 1rem;
+}
+
+.features li span {
+    font-style: italic;
+}
