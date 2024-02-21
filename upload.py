@@ -88,7 +88,6 @@ response = await getResponse(x_transaction, True, "File Uploaded Successfully")
 return response
 
 
-
 @app.post("/download-file")
 async def download_file(
     response: Response, request: file_name_schema, header_request: Request, credentials: HTTPAuthorizationCredentials = Security(security), db: Session = Depends(get_db)
