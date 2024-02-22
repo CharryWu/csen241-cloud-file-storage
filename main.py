@@ -14,6 +14,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+import json 
 
 app = FastAPI()
 
@@ -46,10 +47,30 @@ async def download(request: Request):
 # Data structure to store uploaded files (replace with database or desired method)
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
-  # Validate and save file
-  # ...
+    # Validate and save file
+    # ...
 
-  # Update uploaded_files data structure
-  # ...
+    # Update uploaded_files data structure
+    # ...
 
-  return {"message": "File uploaded successfully!"}
+    #Test
+    send_data()
+
+    #Return value
+    return {"message": "File uploaded successfully!"}
+
+
+from fastapi import FastAPI, Body, HTTPException
+import requests
+def send_data():
+    url = "http://0.0.0.0:8010/receive_data"
+    #response = requests.post(url, data={'id': 123456789, 'key1':'value1', 'key2':'value2'})
+    response = requests.post(url, json={'id': 1, 'name': 'Jessa'})
+
+    if response.status_code == 200:
+        return {"message": "Data sent successfully"}
+    
+    else:
+        raise HTTPException(status_code=response.status_code, detail=response.text)
+
+    #uvicorn main:app --reload
