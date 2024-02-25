@@ -63,7 +63,8 @@ async def upload_file(file: UploadFile = File(...)):
 from fastapi import FastAPI, Body, HTTPException
 import requests
 def send_data():
-    url = "http://0.0.0.0:8010/receive_data"
+    print("SEND!!!!!!")
+    url = "http://0.0.0.0:8081/receive_data"
     #response = requests.post(url, data={'id': 123456789, 'key1':'value1', 'key2':'value2'})
     response = requests.post(url, json={'id': 1, 'name': 'Jessa'})
 
