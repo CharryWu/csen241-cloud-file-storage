@@ -3,9 +3,8 @@ import asyncio
 import logging
 from urllib.parse import quote as urlencode
 from functools import cache
-
+from fastfiles import base
 import boto3
-from .Local import CloudUpload, FileData, UploadFile
 
 logger = logging.getLogger(__name__)
 
@@ -35,3 +34,4 @@ class S3(CloudUpload):
     async def multi_upload(self, *, files: list[UploadFile]):
         tasks = [asyncio.create_task(self.upload(file=file)) for file in files]
         return await asyncio.gather(*tasks)
+

@@ -3,7 +3,7 @@ from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from dotenv import load_dotenv
 
-import S3, Local, Memory, FileData
+from fastfiles import S3, Local, Memory
 
 load_dotenv()
 app = FastAPI()

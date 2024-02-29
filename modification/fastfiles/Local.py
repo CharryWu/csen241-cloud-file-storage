@@ -1,8 +1,7 @@
 import asyncio
 from logging import getLogger
-
-from .Local import CloudUpload, FileData, Path
 from fastapi import UploadFile
+from fastfiles import base
 
 logger = getLogger()
 

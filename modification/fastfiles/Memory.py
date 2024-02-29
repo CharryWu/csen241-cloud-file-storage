@@ -3,9 +3,8 @@ Memory storage for FastStore. This storage is used to store files in memory.
 """
 import asyncio
 from logging import getLogger
-
-from .Local import CloudUpload, FileData
 from fastapi import UploadFile
+from fastfiles import base
 
 logger = getLogger()
 
@@ -26,3 +25,4 @@ class Memory(CloudUpload):
 
     async def multi_upload(self, *, files: list[UploadFile]) -> list[FileData]:
         return list(await asyncio.gather(*[self.upload(file=file) for file in files]))
+
