@@ -9,6 +9,7 @@ load_dotenv()
 app = FastAPI()
 templates = Jinja2Templates(directory='.')
 
+
 s3 = S3(config={'extra-args': {'ACL': 'public-read'}})
 local = Local()
 memory = Memory()
