@@ -9,6 +9,11 @@ from .main import CloudUpload, FileData, UploadFile
 
 logger = logging.getLogger(__name__)
 
+AWS_ACCESS_KEY_ID     = ""
+AWS_SECRET_ACCESS_KEY = ""
+AWS_DEFAULT_REGION    = ""
+AWS_BUCKET_NAME       = ""
+AWS_DEFAULT_REGION    = ""
 
 class S3(CloudUpload):
     @property
