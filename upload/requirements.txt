@@ -1,0 +1,8 @@
+fastapi
+urllib3
+uvicorn
+boto3
+pillow
+python-dotenv
+jinja2
+python-multipart
