@@ -1,10 +1,9 @@
 import axios from "axios";
-// const API_URL = "http://localhost:8081/api/download";
-const API_URL = "http://3.145.166.223:8081/api/download";
+import api from "../api"
 
 class DownloadService {
     get(bucketName, objectName) {
-        return axios.get(API_URL + "/get", {
+        return axios.get(api.download + "/get", {
             params: {
                 bucket: bucketName,
                 object: objectName
