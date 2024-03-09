@@ -46,8 +46,8 @@ async def shows(req: Request):
     #get file lists
     import boto3
 
-    aws_access_key_id     = "AKIAZTQYJQ64KUO5L2BL"
-    aws_secret_access_key = "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"
+    aws_access_key_id     = ""
+    aws_secret_access_key = ""
     aws_region_name       = "us-west-1"
     bucket_name           = "csen241-file"
 
