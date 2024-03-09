@@ -1,0 +1,3 @@
+./Downloader/client/node_modules
+./Downloader/server/node_modules
+./DOwnloader/server/routes/credential.js
