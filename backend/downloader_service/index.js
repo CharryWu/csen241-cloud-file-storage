@@ -4,7 +4,12 @@ const cors = require("cors");
 const bucketRoute = require("./routes").bucket;
 const objectRoute = require("./routes").object;
 const downloadRoute = require("./routes").download;
-let dotenv = require('dotenv').config()
+const env = require("./env").default
+// let dotenv = require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
+if (!env.DOWNLOADER_BACKEND_PORT) {
+    console.log("Can't read .env file. Stop.");
+    return;
+}
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -13,6 +18,6 @@ app.use("/api/bucket", bucketRoute);
 app.use("/api/object", objectRoute);
 app.use("/api/download", downloadRoute);
 
-app.listen(process.env.UPLOADER_BACKEND_PORT, () => {
-    console.log(`Server is running on port ${process.env.UPLOADER_BACKEND_PORT}...`)
+app.listen(env.DOWNLOADER_BACKEND_PORT, () => {
+    console.log(`Server is running on port ${env.DOWNLOADER_BACKEND_PORT}...`)
 });
