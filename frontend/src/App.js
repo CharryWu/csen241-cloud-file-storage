@@ -4,6 +4,7 @@ import HomeComponent from "./components/home-component";
 import BucketComponent from "./components/bucket-component";
 import ObjectComponent from "./components/object-component";
 import DownloadComponent from "./components/download-component";
+import UploadComponent from "./components/upload-component";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route index element={<HomeComponent />} />
           <Route path="bucket" element={<BucketComponent />} />
           <Route path="object" element={<ObjectComponent />} />
+          <Route path="upload" element={<UploadComponent />} />
           <Route path="download" element={<DownloadComponent />} />
         </Route>
       </Routes>

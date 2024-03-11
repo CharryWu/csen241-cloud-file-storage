@@ -12,6 +12,6 @@ COPY home.html ./
 
 RUN pip install -r requirements.txt
 
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["python3", "app.py"]
 
-EXPOSE 8080
+EXPOSE 8088

@@ -25,6 +25,11 @@ const NavComponent = () => {
                   </Link>
                 </li>
                 <li className="nav-item">
+                  <Link className="nav-link active" to="/upload">
+                    UPLOAD
+                  </Link>
+                </li>
+                <li className="nav-item">
                   <Link className="nav-link active" to="/download">
                     DOWNLOAD
                   </Link>

@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request, Depends
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from dotenv import load_dotenv
+from fastapi.middleware.cors import CORSMiddleware
 
 from fastfiles import S3, FileData
 

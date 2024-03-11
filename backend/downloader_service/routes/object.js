@@ -7,7 +7,7 @@ AWS.config.update({
     secretAccessKey: Credential.secretAccessKey
 });
 
-let s3 = new AWS.S3({signatureVersion: 'v4', region: 'us-west-1'});
+let s3 = new AWS.S3({signatureVersion: 'v4', region: Credential.region});
 
 router.use((req, res, next) => {
     console.log("This is router object speaking...")

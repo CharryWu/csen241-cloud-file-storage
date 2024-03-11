@@ -26,6 +26,7 @@ class S3(CloudUpload):
             extra_args = self.config.get('extra_args', {})
             region_name = os.environ.get("UPLOAD_DEFAULT_REGION", "")
             bucket = os.environ.get("UPLOAD_DEFAULT_BUCKET", "")
+            print("files:",file)
             await asyncio.to_thread(self.client.upload_fileobj, file.file, bucket, file.filename, ExtraArgs=extra_args)
             url = f"https://{bucket}.s3.{region_name}.amazonaws.com/{urlencode(file.filename.encode('utf8'))}"
             return FileData(url=url, message=f'{file.filename} uploaded successfully', filename=file.filename,
@@ -34,6 +35,6 @@ class S3(CloudUpload):
             logger.error(err)
             return FileData(status=False, error=str(err), message='File upload was unsuccessful')
 
-    async def multi_upload(self, *, files: list[UploadFile]):
+    async def multi_upload(self, *, files: list[UploadFile]) -> list[FileData]:
         tasks = [asyncio.create_task(self.upload(file=file)) for file in files]
         return await asyncio.gather(*tasks)
