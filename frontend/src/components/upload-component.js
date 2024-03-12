@@ -103,7 +103,6 @@ const UploadComponent = () => {
             </div>
                 <p></p>
                 <h2>To upload:</h2>
-                <AlertDismissible type="alert"/>
                 <FilePondComponent/>
             </div>
         </div>

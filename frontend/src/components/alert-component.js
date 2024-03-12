@@ -1,24 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 
-function AlertDismissible(type) {
-  const [show, setShow] = useState(true);
-  const [alert_type, setType] = useState(type);
+function AlertDismissible({children, type, title, err, msg, showing, onX}) {
+  //const [show, setShow] = useState(false);
+  console.log(type, msg, showing)
+  
+  const renderElAlert = function () {
+    return React.cloneElement(children);
+  };
 
-  if (show) {
+  if (showing) {
     return (
-      <Alert variant="danger" onClose={() => setShow(false)} dismissible>
-        <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
+      <Alert variant={type} onClose={onX} dismissible>
+        <Alert.Heading>{title? title : '...'}</Alert.Heading>
         <p>
-          Change this and that and try again. Duis mollis, est non commodo
-          luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
-          Cras mattis consectetur purus sit amet fermentum.
+        {err ? err : ''}
+        {children ? renderElAlert() : msg}
         </p>
       </Alert>
     );
   }
-  return <Button onClick={() => setShow(true)}>Show Alert</Button>;
+  
+  return ;
 }
 
 export default AlertDismissible;

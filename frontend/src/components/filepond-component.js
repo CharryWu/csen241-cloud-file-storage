@@ -1,5 +1,7 @@
 import uploadService from '../services/upload.service';
 import api from '../api'
+import AlertDismissible from './alert-component';
+import ButtonExample from './button-component';
 // Import FilePond styles
 import React, { useState, useEffect } from "react";
 
@@ -37,38 +39,39 @@ registerPlugin(
 
 export default function FilePondComponent() {
     const [files, setFiles] = useState([]);
+    const [title, setTitle] = useState('Loading ...');
+    const [alertType, setAlertType] = useState('info');
+    const [isToggled, setIsToggled] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
     // console.log("files", files);
     let pond = null;
-  
+
     const onSubmit = (e) => {
         console.log("pond", pond);
         console.log("files", files);
-        
+        setIsLoading(true);
         let pond_files = pond.getFiles()
         pond_files.forEach((file)=>{
             console.log(file)
+            setIsLoading(true);
             uploadService.post("file", file.file, api.upload + '/s3')
             .then((res)=>{
-                console.log(res)
+                console.log(res) 
+                setTitle('Oh yeah! Your request is successful!')
+                setAlertType('success')
+                setErrorMsg(alertType + ' | ' + res.status + ' : ' + res.data.filename + ' uploaded successfully!')
+                setIsLoading(false);
             }).catch((err)=>{
-                window.alert(err)
+                //window.alert(err)
+                setTitle('Oh snap! You got an error!')
+                setAlertType('danger')
+                setErrorMsg(alertType + ' : ' + err + ' --- server not available, try again later ...')
+                setIsLoading(false);
             })
         })
+        setIsToggled(true)
         
-       /*
-      if (pond) {
-        let pond_files = pond.getFiles();
-        pond_files.forEach((file) => {
-            console.log("each file", file, file.getFileEncodeBase64String());
-        });
-  
-        pond
-          .processFiles(pond_files)
-          .then((res) => console.log(res))
-          .catch((error) => console.log("err", error));
-      }*/
-      
     };
     const handlePondFile = (error, file) => {
         if (error) {
@@ -78,10 +81,17 @@ export default function FilePondComponent() {
         }
         console.log('File added', file);
     }
+
+    const handleAlert = () =>{
+        setTitle('Loading...')
+        setIsToggled(false);
+        setAlertType('info')
+        setErrorMsg('...')
+    }
   
     return (
         <div className=''>
-    
+            <AlertDismissible type={alertType} showing={isToggled} title={title} msg={errorMsg} onX={handleAlert}/>
             <FilePond
             server={{
                 process:{
@@ -120,9 +130,7 @@ export default function FilePondComponent() {
             labelFileProcessingError={errorMsg}
             />
             <div>
-                    <button onClick={onSubmit} className="btn btn-primary">
-                        <span>UPLOAD</span>
-                    </button>
+                <ButtonExample isLoading={isLoading} onSubmit={onSubmit}/>
             </div>
             
         </div>
