@@ -15,9 +15,6 @@ const HomeComponent = () => {
             </button>
           </div>
         </div>
-        <footer className="pt-3 mt-4 text-muted border-top">
-          &copy; 2024-Winter CSEN241
-        </footer>
       </div>
     </main>
   );

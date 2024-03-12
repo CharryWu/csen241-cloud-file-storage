@@ -18,17 +18,21 @@ const BucketComponent = () => {
   return (
     <div style={{ padding: "3rem" }} className="col-md-12">
       <div>
-          <Table striped bordered hover>
-          <tr>
+          <Table striped bordered hover responsive>
+          <thead>
+            <tr>
               <th>Name</th>
               <th>CreationDate</th>
             </tr>
+            </thead>
+            <tbody>
             {bucketData && bucketData.map((bucket) => (
                 <tr>
                   <td>{bucket["Name"]}</td>
                   <td>{bucket["CreationDate"]}</td>
                 </tr>
               ))}
+            </tbody>
           </Table>
       </div>
     </div>

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import FilePondComponent from "./filepond-component";
 import BucketService from "../services/bucket.service";
 import ObjectService from "../services/object.service";
+import AlertDismissible from "./alert-component";
 
 const UploadComponent = () => {
     let [bucketName, setBucketName] = useState(null);
@@ -102,6 +103,7 @@ const UploadComponent = () => {
             </div>
                 <p></p>
                 <h2>To upload:</h2>
+                <AlertDismissible type="alert"/>
                 <FilePondComponent/>
             </div>
         </div>

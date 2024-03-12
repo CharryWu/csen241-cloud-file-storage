@@ -80,8 +80,8 @@ export default function FilePondComponent() {
     }
   
     return (
-        <div className='container'>
-
+        <div className=''>
+    
             <FilePond
             server={{
                 process:{

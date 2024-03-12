@@ -5,9 +5,9 @@ const NavComponent = () => {
   return (
     <div>
       <nav>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <div className="container-fluid">
-            <div className="collapse navbar-collapse" id="navbarNav">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light container ">
+          <div className="container-fluid ">
+            <div className="collapse navbar-collapse d-flex justify-content-center" id="navbarNav">
               <ul className="navbar-nav">
                 <li className="nav-item">
                   <Link className="nav-link active" to="/">
