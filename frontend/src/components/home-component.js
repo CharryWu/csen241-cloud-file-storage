@@ -1,19 +1,32 @@
 import React from "react";
+import {
+  CognitoUserPool
+} from "amazon-cognito-identity-js";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom"
 
 const HomeComponent = () => {
+  const userData = useSelector((state) => state.auth.userData);
   return (
     <main>
-      <div className="container py-4">
-        <div className="p-5 mb-4 bg-light rounded-3">
-          <div className="container-fluid py-5">
-            <h1 className="display-5 fw-bold">Welcome to File Storage System</h1>
-            <p className="col-md-8 fs-4">
-              This website is to download files using the AWS S3 service.
-            </p>
-            <button className="btn btn-primary btn-lg" type="button">
-              Getting started!
-            </button>
+      <div className="">
+        <div className="">
+          <div className="container-fluid py-5 d-flex justify-content-between">
+            <div>
+              <h1 className="Greeting">Hi {userData.name}!</h1>
+              <h1 className="display-5 fw-bold">Welcome to File Storage System!</h1>
+              <p className="col-md-8 fs-4">
+                <i>This website tries to be a private cloud on a public cloud.</i>
+              </p>
+              <button className="btn btn-primary btn-lg" type="button">
+                <a href="login" className="badge badge-primary">Getting started!</a> 
+              </button>
+            </div>
+            <div className="">
+              <img className="img-fluid rounded" src="cloud-computing.png"/>
+            </div>
           </div>
+          
         </div>
       </div>
     </main>

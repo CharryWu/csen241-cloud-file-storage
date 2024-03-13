@@ -16,6 +16,7 @@ router.use((req, res, next) => {
 
 router.get("/getBuckets", async (req, res) => {
     const data = await s3.listBuckets().promise();
+    console.log(data)
     return res.status(200).send(data);
 });
 

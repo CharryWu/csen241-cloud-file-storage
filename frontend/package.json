@@ -12,6 +12,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-amplify/ui-react": "^6.1.5",
+    "@reduxjs/toolkit": "^2.2.1",
+    "amazon-cognito-identity-js": "^6.3.12",
+    "aws-amplify": "^6.0.20",
+    "aws-sdk": "^2.1576.0",
     "axios": "^1.6.7",
     "bootstrap": "^5.3.3",
     "dotenv": "^16.4.5",
@@ -24,12 +29,16 @@
     "filepond-plugin-image-preview": "^4.6.12",
     "filepond-plugin-image-resize": "^2.0.10",
     "filepond-plugin-image-transform": "^3.8.7",
+    "formik": "^2.4.5",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.1",
     "react-dom": "^18.2.0",
     "react-filepond": "^7.1.2",
+    "react-redux": "^9.1.0",
     "react-router-dom": "^6.22.3",
-    "react-scripts": "^5.0.1"
+    "react-scripts": "^5.0.1",
+    "sass": "^1.71.1",
+    "yup": "^1.4.0"
   },
   "browserslist": {
     "production": [

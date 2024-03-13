@@ -9,11 +9,13 @@ const DownloadComponent = () => {
     let [objectName, setObjectName] = useState(null);
     let [bucketData, setBucketData] = useState(null);
     let [objectData, setObjectData] = useState(null);
+    let [bucketOwner, setBucketOwner] = useState(null);
 
     useEffect(() => {
         BucketService.get()
         .then((res) => {
             setBucketData(res.data['Buckets']);
+            setBucketOwner(res.data['Owner'])
         })
         .catch((e) => {
             window.alert(e);
@@ -50,19 +52,25 @@ const DownloadComponent = () => {
 
     return (
         <div style={{ padding: "3rem" }} className="col-md-12">
+            <h3>Buckets:</h3>
             <div>
-                <h3>Buckets:</h3>
-                <Table striped bordered hover>
-                <tr>
+                <Table striped bordered hover responsive>
+                <thead>
+                    <tr>
                     <th>Name</th>
                     <th>CreationDate</th>
-                </tr>
-                {bucketData && bucketData.map((bucket) => (
-                    <tr>
+                    <th>Owner</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {bucketData && bucketData.map((bucket) => (
+                        <tr>
                         <td>{bucket["Name"]}</td>
                         <td>{bucket["CreationDate"]}</td>
-                    </tr>
-                ))}
+                        <td>{bucketOwner.DisplayName}</td>
+                        </tr>
+                    ))}
+                    </tbody>
                 </Table>
             </div>
             <p></p>
