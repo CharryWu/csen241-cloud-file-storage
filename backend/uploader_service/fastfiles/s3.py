@@ -23,6 +23,7 @@ class S3(CloudUpload):
 
     async def upload(self, bucketName, file: UploadFile) -> FileData:
         try:
+            print("bucketName", bucketName)
             extra_args = self.config.get('extra_args', {})
             region_name = os.environ.get("UPLOAD_DEFAULT_REGION", "")
             bucket = bucketName

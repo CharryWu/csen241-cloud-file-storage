@@ -2,6 +2,7 @@ const router = require("express").Router();
 var AWS = require("aws-sdk");
 const { Credential } = require('./credential.js');
 const { listUsers, getUserAttributes } = require('../utils/users.js');
+const { bucket } = require("./index.js");
 AWS.config.update({
     accessKeyId: Credential.accessKeyId,
     secretAccessKey: Credential.secretAccessKey,
@@ -29,6 +30,26 @@ router.get("/getBuckets", async (req, res) => {
     }
 
     return res.status(200).send(data);
+});
+
+router.get("/create/:bucket", async (req, res) => {
+    console.log(req.params)
+    let bucket = req.params.bucket
+    // Create the parameters for calling createBucket
+    var bucketParams = {
+        Bucket: bucket ||  "",
+    };
+    // Call S3 to list the buckets
+    // call S3 to create the bucket
+    s3.createBucket(bucketParams, function (err, data) {
+        if (err) {
+        console.log("Error", err);
+        } else {
+        console.log("Success in Creating Bucket " + bucket, data.Location);
+        }
+    });
+
+    return res.status(200).send({"name": bucket});
 });
 
 router.post("/getBuckets", async (req, res) => {

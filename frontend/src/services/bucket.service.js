@@ -17,8 +17,7 @@ class BucketService {
 
     async createBucket(bucketName){
 
-        return axios.post(api.bucket_create + "/" + bucketName, {
-        });
+        return axios.get(api.bucket_create + "/" + bucketName);
     }
 }
 

@@ -45,27 +45,7 @@ async def upload(bucketName, file: FileData = Depends(s3)) -> FileData:
     # s3.upload(bucketName, file)
     return file
 
-@app.post('/api/create/s3/bucket/{bucketName}', name="s3_create_buck")
-async def upload(bucketName: str):
-    print("bucketname ", bucketName)
-    region_name = os.environ.get("UPLOAD_DEFAULT_REGION", "")
-    print("region ", region_name)
-    item = {}
-    try:
-        s3_client = client()
-        s3_client.create_bucket(
-            Bucket = bucketName
-        )
-        print(f"S3 bucket '{bucketName}' created successfully in region {region_name}.")
-        item['msg'] = f"S3 bucket '{bucketName}' created successfully in region {region_name}."
-    except Exception as e:
-        print(f"An error occurred while creating the S3 bucket: {e}")
-        item['msg'] = f"An error occurred while creating the S3 bucket: {e}"
-        
-    
-    json_compatible_item_data = jsonable_encoder(item)
-    return JSONResponse(content=json_compatible_item_data)
-        
+      
 def client() -> boto3.session.Session.client:
     aws_access_key_id = os.environ.get("AWS_ACCESS_KEY_ID", "")
     aws_secret_access_key = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
