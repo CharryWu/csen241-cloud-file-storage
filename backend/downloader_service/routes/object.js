@@ -24,7 +24,7 @@ router.get("/getObjects:bucketName", async (req, res) => {
     };
     
     const data = await s3.listObjects(params).promise();
-
+    console.log(data)
     return res.status(200).send(data);
 });
 

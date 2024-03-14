@@ -21,7 +21,7 @@ const client = new AWS.CognitoIdentityServiceProvider({
         UserPoolId: PoolId, // required
     };
   
-    return client.listUsers(input).promise();
+    return client.getUser().promise();
   };
   /** snippet-end:[javascript.v3.cognito-idp.actions.ListUsers] */
   

@@ -37,7 +37,7 @@ const Login = () => {
             console.log("err", err);
             return;
           }
-          
+          console.log(result)
           dispatch(
             updateData({
               name: result[2].Value,

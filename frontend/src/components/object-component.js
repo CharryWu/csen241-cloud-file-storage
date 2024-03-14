@@ -2,14 +2,22 @@ import React, { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
 import ObjectService from "../services/object.service";
 import BucketService from "../services/bucket.service";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const ObjectComponent = () => {
     let [bucketName, setBucketName] = useState(null);
     let [objectData, setObjectData] = useState(null);
     let [bucketData, setBucketData] = useState(null);
     let [bucketOwner, setBucketOwner] = useState(null);
+    const userData = useSelector((state) => state.auth.userData);
+  const navigate = useNavigate()
 
     useEffect(() => {
+        if(userData.name == ""){
+            navigate("/login")
+            return
+        }
         BucketService.get()
         .then((res) => {
             setBucketData(res.data['Buckets']);
