@@ -4,19 +4,29 @@ import Button from 'react-bootstrap/Button';
 import ObjectService from "../services/object.service";
 import BucketService from "../services/bucket.service";
 import DownloadService from "../services/download.service";
+import ShareService from "../services/share.service";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import userPool from "./auth/cognitopool";
+import Form from 'react-bootstrap/Form';
+
 import Modal from 'react-bootstrap/Modal';
 import FilePondComponent from "./filepond-component";
-import { IoMdCloudUpload, IoMdDownload } from "react-icons/io";
+import { IoMdCloudUpload, IoMdDownload, IoMdShare } from "react-icons/io";
 import { humanReadableFileSize } from '../utils'
 
 
 const ObjectComponent = () => {
     let [bucketName, setBucketName] = useState(null);
     let [objectData, setObjectData] = useState(null);
+    let [sharedObjectData, setSharedObjectData] = useState(null);
     let [bucketData, setBucketData] = useState(null);
+    let [listUserData, setListUserData] = useState([]);
+    let [selectedShareUser, setSelectedShareUser] = useState(null);
+    let [shareBucket, setShareBucket] = useState(null);
+    let [shareObjectName, setShareObjectName] = useState(null);
     const [show, setShow] = useState(false);
+    const [showShare, setShowShareModal] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const userData = useSelector((state) => state.auth.userData);
@@ -37,13 +47,24 @@ const ObjectComponent = () => {
             navigate("/login")
             return
         }
-        BucketService.get()
+        BucketService.post()
             .then((res) => {
                 setBucketData(res.data);
                 if (res.data['Name']) {
                     setBucketName(res.data['Name'])
                     refreshObjects(res.data['Name'])
                 }
+            })
+            .catch((e) => {
+                window.alert(e);
+            });
+
+        const currentUser = userPool.getCurrentUser()
+        if (!currentUser.username) return
+        ShareService.get(currentUser.username)
+            .then((res) => {
+                console.log(res)
+                setSharedObjectData(res.data.files);
             })
             .catch((e) => {
                 window.alert(e);
@@ -58,6 +79,21 @@ const ObjectComponent = () => {
                 window.alert(e);
             });
     }
+    const onShare = async (bucketName, objectName) => {
+        ShareService.getUsers().then((res) => {
+            const currentUser = userPool.getCurrentUser()
+            console.log(currentUser)
+            setListUserData(res.data.Users.filter(x => x.Username !== currentUser.username))
+            setShowShareModal(true)
+            setShareBucket(bucketName)
+            setShareObjectName(objectName)
+        })
+    }
+    const handleShare = async () => {
+        if (shareBucket && shareObjectName && selectedShareUser) {
+            ShareService.post(selectedShareUser, bucketName, shareObjectName)
+        }
+    }
 
     const onEventReceived = (event_name) => {
         if (event_name === 'upload_success') {
@@ -70,11 +106,39 @@ const ObjectComponent = () => {
         return <>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Upload New File</Modal.Title>
+                    <Modal.Title>Select User to Share</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <FilePondComponent bucketName={bucketName} emit={onEventReceived} />
                 </Modal.Body>
+            </Modal>
+        </>
+    }
+    const handleCloseShareModal = () => setShowShareModal(false)
+    const updateSharedUser = (e) => {
+        setSelectedShareUser(e.target.value)
+    }
+    const renderShareModal = () => {
+        return <>
+            <Modal show={showShare} onHide={handleCloseShareModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Share File with User</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                <Form.Select onChange={updateSharedUser} aria-label="Default select example">
+                    {
+                        listUserData.map(u => <option value={u.Username}>{u.Username}</option>)
+                    }
+                </Form.Select>
+                </Modal.Body>
+                <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseShareModal}>
+            Close
+          </Button>
+          <Button disabled={!shareBucket || !shareObjectName} variant="primary" onClick={handleShare}>
+            Share!
+          </Button>
+                </Modal.Footer>
             </Modal>
         </>
     }
@@ -117,6 +181,7 @@ const ObjectComponent = () => {
                             <th>Size</th>
                             <th>LastModified</th>
                             <th>Download</th>
+                            <th>Share</th>
                         </tr>
                         {objectData && objectData.map((object) => (
                             <tr>
@@ -130,12 +195,43 @@ const ObjectComponent = () => {
                                         <IoMdDownload />
                                     </Button>
                                 </td>
+                                <td>
+                                    <Button type="primary" onClick={
+                                        () => onShare(bucketName, object["Key"])
+                                    } active style={{ width: 50 }}>
+                                        <IoMdShare />
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))}
+                    </Table>
+                </div>
+            </div>
+            <h3>Shared Files:</h3>
+            <div>
+                <div>
+                    <Table striped bordered hover>
+                        <tr>
+                            <th>Name</th>
+                            <th>Download</th>
+                        </tr>
+                        {sharedObjectData && sharedObjectData.map((object) => (
+                            <tr>
+                                <td>{object[1]}</td>
+                                <td>
+                                    <Button type="primary" onClick={
+                                        () => onDownload(object[0], object[1])
+                                    } active style={{ width: 50 }}>
+                                        <IoMdDownload />
+                                    </Button>
+                                </td>
                             </tr>
                         ))}
                     </Table>
                 </div>
             </div>
             {renderUploadModal()}
+            {renderShareModal()}
         </div>
     );
 };

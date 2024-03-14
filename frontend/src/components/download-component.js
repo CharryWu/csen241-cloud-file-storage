@@ -12,7 +12,7 @@ const DownloadComponent = () => {
     let [bucketOwner, setBucketOwner] = useState(null);
 
     useEffect(() => {
-        BucketService.get()
+        BucketService.post()
         .then((res) => {
             setBucketData(res.data['Buckets']);
             setBucketOwner(res.data['Owner'])

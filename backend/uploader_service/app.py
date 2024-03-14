@@ -9,7 +9,10 @@ from fastfiles import S3, FileData
 import os
 import json
 import boto3
+from pydantic import BaseModel
 import uvicorn
+import json
+
 
 load_dotenv()
 app = FastAPI()
@@ -44,16 +47,62 @@ async def upload(bucketName, file: FileData = Depends(s3)) -> FileData:
     # s3.client()
     # s3.upload(bucketName, file)
     return file
+'''
+@app.post('/api/upload/{storage_type}', name="s3_upload")
+async def upload(storage_type: str, request: Request, files: list[FileData] = Depends(s3),) -> list[FileData]:
+    print(storage_type)
+    print(request)
+    print(files)
+    return files
+'''
+class SharePostParamInput(BaseModel):
+    targetUser: str
+    bucketName: str
+    objectName: str
 
-      
-def client() -> boto3.session.Session.client:
-    aws_access_key_id = os.environ.get("AWS_ACCESS_KEY_ID", "")
-    aws_secret_access_key = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
-    region_name = os.environ.get("UPLOAD_DEFAULT_REGION", "")
-    return boto3.client('s3', region_name=region_name, aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
-    
+class ShareGetParamInput(BaseModel):
+    targetUser: str
+
+FILE_NAME = 'share.json'
+
+@app.post('/api/share', name='share_post')
+async def share(params: SharePostParamInput):
+    data = {}
+    if os.path.exists(FILE_NAME) and os.path.isfile(FILE_NAME):
+        with open(FILE_NAME, "r") as jsonFile:
+            data = json.load(jsonFile)
+
+    if params.targetUser not in data:
+        data[params.targetUser] = [(params.bucketName, params.objectName)]
+    else:
+
+        data[params.targetUser].append((params.bucketName, params.objectName))
+
+    with open("share.json", "w+") as jsonFile:
+        json.dump(data, jsonFile)
+
+    return {
+        'status': 0,
+    }
+
+@app.post('/api/share_get', name='share_get')
+async def share_get(params: ShareGetParamInput):
+    data = {}
+    files = []
+    targetUser = params.targetUser
+    if os.path.exists(FILE_NAME) and os.path.isfile(FILE_NAME):
+        with open(FILE_NAME, "r") as jsonFile:
+            data = json.load(jsonFile)
+    print(data)
+
+    if targetUser in data:
+        files = data[targetUser]
 
 
+    return {
+        'status': 0,
+        'files': files
+    }
 if __name__ == "__main__":
     uvicorn.run("app:app", host=backend_host, port=backend_port, log_level="info", reload=True)
 

@@ -14,7 +14,7 @@ const BucketComponent = () => {
       navigate("/login")
       return
     }
-    BucketService.get("/" + userData.name)
+    BucketService.post("/" + userData.name)
       .then((res) => {
         setBucketData(res.data);
       })

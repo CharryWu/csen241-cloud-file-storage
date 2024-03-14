@@ -3,12 +3,11 @@
 const { Credential } = require('../routes/credential');
 AWS = require("aws-sdk");
 
-/*
 AWS.config.update({
     accessKeyId: Credential.accessKeyId,
     secretAccessKey: Credential.secretAccessKey
 });
-*/
+
 const client = new AWS.CognitoIdentityServiceProvider({
   region: Credential.region,
 
@@ -21,7 +20,7 @@ const listUsers = (PoolId) => {
     UserPoolId: PoolId, // required
   };
 
-  return client.listUsers().promise();
+  return client.listUsers(input).promise();
 };
 /** snippet-end:[javascript.v3.cognito-idp.actions.ListUsers] */
 
