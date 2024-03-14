@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import cognito from '../../api/cognito'
 import userPool from "../auth/cognitopool";
+import bucketService from "../../services/bucket.service";
 
 // styling
 import "./signup.scss";
@@ -37,6 +38,11 @@ export const SignUp = () => {
         return;
       }
       console.log("call result: ", result);
+      bucketService.createBucket(result.userSub).then((res) => {
+        console.log(res);
+      }).catch(err => {
+        console.log(err);
+      });
       navigate("/login");
     });
   };

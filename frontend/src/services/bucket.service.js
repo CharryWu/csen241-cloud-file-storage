@@ -14,6 +14,12 @@ class BucketService {
             accessToken
         });
     }
+
+    async createBucket(bucketName){
+
+        return axios.post(api.bucket_create + "/" + bucketName, {
+        });
+    }
 }
 
 export default new BucketService();
