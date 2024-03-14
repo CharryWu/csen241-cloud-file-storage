@@ -7,11 +7,13 @@ const ObjectComponent = () => {
     let [bucketName, setBucketName] = useState(null);
     let [objectData, setObjectData] = useState(null);
     let [bucketData, setBucketData] = useState(null);
+    let [bucketOwner, setBucketOwner] = useState(null);
 
     useEffect(() => {
         BucketService.get()
         .then((res) => {
             setBucketData(res.data['Buckets']);
+            setBucketOwner(res.data['Owner'])
         })
         .catch((e) => {
             window.alert(e);
@@ -36,18 +38,26 @@ return (
     <div style={{ padding: "3rem" }} className="col-md-12">
         <div>
             <h3>Buckets:</h3>
-            <Table striped bordered hover>
-            <tr>
-                <th>Name</th>
-                <th>CreationDate</th>
-            </tr>
-            {bucketData && bucketData.map((bucket) => (
-                <tr>
-                    <td>{bucket["Name"]}</td>
-                    <td>{bucket["CreationDate"]}</td>
-                </tr>
-            ))}
-            </Table>
+            <div>
+                <Table striped bordered hover responsive>
+                <thead>
+                    <tr>
+                    <th>Name</th>
+                    <th>CreationDate</th>
+                    <th>Owner</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {bucketData && bucketData.map((bucket) => (
+                        <tr>
+                        <td>{bucket["Name"]}</td>
+                        <td>{bucket["CreationDate"]}</td>
+                        <td>{bucketOwner.DisplayName}</td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </Table>
+            </div>
         </div>
         <p></p>
         <div>

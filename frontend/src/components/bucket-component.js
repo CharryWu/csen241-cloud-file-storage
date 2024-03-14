@@ -4,11 +4,14 @@ import BucketService from "../services/bucket.service";
 
 const BucketComponent = () => {
   let [bucketData, setBucketData] = useState(null);
+  let [bucketOwner, setBucketOwner] = useState(null);
 
   useEffect(() => {
     BucketService.get()
       .then((res) => {
+        console.log(res.data);
         setBucketData(res.data['Buckets']);
+        setBucketOwner(res.data['Owner'])
       })
       .catch((e) => {
         window.alert(e);
@@ -23,6 +26,7 @@ const BucketComponent = () => {
             <tr>
               <th>Name</th>
               <th>CreationDate</th>
+              <th>Owner</th>
             </tr>
             </thead>
             <tbody>
@@ -30,6 +34,7 @@ const BucketComponent = () => {
                 <tr>
                   <td>{bucket["Name"]}</td>
                   <td>{bucket["CreationDate"]}</td>
+                  <td>{bucketOwner.DisplayName}</td>
                 </tr>
               ))}
             </tbody>

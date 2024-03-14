@@ -2,8 +2,8 @@ import axios from "axios";
 import api from "../api"
 
 class BucketService {
-    get() {
-        return axios.get(api.bucket + "/getBuckets");
+    get(user="") {
+        return axios.get(api.bucket + "/getBuckets" +user);
     }
 }
 
