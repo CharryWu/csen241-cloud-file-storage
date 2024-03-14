@@ -11,7 +11,7 @@ const signOut = () => {
       cognitoUser.signOut();
     }
 
-    useNavigateavigate("/");
+    useNavigate("/");
 };
 
 export default signOut;
