@@ -49,12 +49,12 @@ class CloudUpload(ABC):
             config (dict): A dictionary of config settings
         """
         self.config = config or {}
-        
-    async def __call__(self, file: UploadFile | None = None, files: list[UploadFile] | None = None) -> FileData | list[FileData]:
+
+    async def __call__(self, bucketName, file: UploadFile | None = None, files: list[UploadFile] | None = None) -> FileData | list[FileData]:
         try:
             if file:
-                return await self.upload(file=file)
-    
+                return await self.upload(bucketName, file=file)
+
             elif files:
                 return await self.multi_upload(files=files)
             else:
@@ -63,7 +63,7 @@ class CloudUpload(ABC):
             return FileData(status=False, error=str(err), message='File upload was unsuccessful')
 
     @abstractmethod
-    async def upload(self, *, file: UploadFile) -> FileData:
+    async def upload(self, bucketName, file: UploadFile) -> FileData:
         """"""
 
     @abstractmethod

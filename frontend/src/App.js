@@ -16,8 +16,8 @@ function App() {
           <Route index element={<HomeComponent />} />
           {/* <Route path="bucket" element={<BucketComponent />} /> */}
           <Route path="object" element={<ObjectComponent />} />
-          <Route path="upload" element={<UploadComponent />} />
-          <Route path="download" element={<DownloadComponent />} />
+          {/* <Route path="upload" element={<UploadComponent />} /> */}
+          {/* <Route path="download" element={<DownloadComponent />} /> */}
           <Route path="signup" element={<SignUp />} />
           <Route path="login" element={<Login />} />
         </Route>

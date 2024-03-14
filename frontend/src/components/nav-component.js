@@ -32,16 +32,16 @@ const NavComponent = () => {
                     FILES
                   </Link>
                 </li>
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <Link className="nav-link active" to="/upload">
                     UPLOAD
                   </Link>
-                </li>
-                <li className="nav-item">
+                </li> */}
+                {/* <li className="nav-item">
                   <Link className="nav-link active" to="/download">
                     DOWNLOAD
                   </Link>
-                </li>
+                </li> */}
               </ul>
             </div>
             <div className="collapse navbar-collapse d-flex justify-content-center" id="navbarNav">

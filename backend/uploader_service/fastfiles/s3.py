@@ -21,12 +21,13 @@ class S3(CloudUpload):
         region_name = os.environ.get("UPLOAD_DEFAULT_REGION", "")
         return boto3.client('s3', region_name=region_name, aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
 
-    async def upload(self, *, file: UploadFile) -> FileData:
+    async def upload(self, bucketName, file: UploadFile) -> FileData:
         try:
             extra_args = self.config.get('extra_args', {})
             region_name = os.environ.get("UPLOAD_DEFAULT_REGION", "")
-            bucket = os.environ.get("UPLOAD_DEFAULT_BUCKET", "")
-            print("files:",file)
+            bucket = bucketName
+            if not bucket:
+                bucket = os.environ.get("UPLOAD_DEFAULT_BUCKET", "")
             await asyncio.to_thread(self.client.upload_fileobj, file.file, bucket, file.filename, ExtraArgs=extra_args)
             url = f"https://{bucket}.s3.{region_name}.amazonaws.com/{urlencode(file.filename.encode('utf8'))}"
             return FileData(url=url, message=f'{file.filename} uploaded successfully', filename=file.filename,

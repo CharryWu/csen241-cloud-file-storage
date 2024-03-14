@@ -2,7 +2,6 @@ const router = require("express").Router();
 var AWS = require("aws-sdk");
 const { Credential } = require('./credential.js');
 const { listUsers, getUserAttributes } = require('../utils/users.js');
-
 AWS.config.update({
     accessKeyId: Credential.accessKeyId,
     secretAccessKey: Credential.secretAccessKey,

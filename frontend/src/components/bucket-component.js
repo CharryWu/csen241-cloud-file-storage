@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
 import BucketService from "../services/bucket.service";
 import { useSelector } from "react-redux";
-import checkLogIn from "./auth/auth";
 import { useNavigate } from "react-router-dom";
 
 const BucketComponent = () => {

@@ -1,7 +1,7 @@
 import uploadService from '../services/upload.service';
 import api from '../api'
 import AlertDismissible from './alert-component';
-import ButtonExample from './button-component';
+import UploadButton from './button-component';
 // Import FilePond styles
 import React, { useState, useEffect } from "react";
 
@@ -27,17 +27,17 @@ import FilePondPluginImageCrop from "filepond-plugin-image-crop";
 
 // Register the plugins
 registerPlugin(
-  FilePondPluginImageExifOrientation,
-  FilePondPluginImagePreview,
-  FilePondPluginFileEncode,
-  FilePondPluginFileValidateSize,
-  FilePondPluginFileValidateType,
-  FilePondPluginImageResize,
-  FilePondPluginImageCrop,
-  FilePondPluginImageTransform
+    FilePondPluginImageExifOrientation,
+    FilePondPluginImagePreview,
+    FilePondPluginFileEncode,
+    FilePondPluginFileValidateSize,
+    FilePondPluginFileValidateType,
+    FilePondPluginImageResize,
+    FilePondPluginImageCrop,
+    FilePondPluginImageTransform
 );
 
-export default function FilePondComponent() {
+export default function FilePondComponent({ bucketName, emit }) {
     const [files, setFiles] = useState([]);
     const [title, setTitle] = useState('Loading ...');
     const [alertType, setAlertType] = useState('info');
@@ -50,28 +50,37 @@ export default function FilePondComponent() {
     const onSubmit = (e) => {
         console.log("pond", pond);
         console.log("files", files);
+        if (files.length === 0) {
+            return;
+        }
         setIsLoading(true);
         let pond_files = pond.getFiles()
-        pond_files.forEach((file)=>{
+        let counter = 0;
+        pond_files.forEach((file) => {
             console.log(file)
             setIsLoading(true);
-            uploadService.post("file", file.file, api.upload + '/s3')
-            .then((res)=>{
-                console.log(res) 
-                setTitle('Oh yeah! Your request is successful!')
-                setAlertType('success')
-                setErrorMsg(alertType + ' | ' + res.status + ' : ' + res.data.filename + ' uploaded successfully!')
-                setIsLoading(false);
-            }).catch((err)=>{
-                //window.alert(err)
-                setTitle('Oh snap! You got an error!')
-                setAlertType('danger')
-                setErrorMsg(alertType + ' : ' + err + ' --- server not available, try again later ...')
-                setIsLoading(false);
-            })
+            uploadService.post("file", file.file, api.upload + '/s3/' + bucketName)
+                .then((res) => {
+                    console.log(res)
+                    setTitle('Oh yeah! Your request is successful!')
+                    setAlertType('success')
+                    setErrorMsg(alertType + ' | ' + res.status + ' : ' + res.data.filename + ' uploaded successfully!')
+                    setIsLoading(false);
+                    counter++;
+
+                    if (counter === pond_files.length) {
+                        emit('upload_success');
+                    }
+                }).catch((err) => {
+                    //window.alert(err)
+                    setTitle('Oh snap! You got an error!')
+                    setAlertType('danger')
+                    setErrorMsg(alertType + ' : ' + err + ' --- server not available, try again later ...')
+                    setIsLoading(false);
+                })
         })
         setIsToggled(true)
-        
+
     };
     const handlePondFile = (error, file) => {
         if (error) {
@@ -82,58 +91,57 @@ export default function FilePondComponent() {
         console.log('File added', file);
     }
 
-    const handleAlert = () =>{
+    const handleAlert = () => {
         setTitle('Loading...')
         setIsToggled(false);
         setAlertType('info')
         setErrorMsg('...')
     }
-  
+
     return (
         <div className=''>
-            <AlertDismissible type={alertType} showing={isToggled} title={title} msg={errorMsg} onX={handleAlert}/>
+            <AlertDismissible type={alertType} showing={isToggled} title={title} msg={errorMsg} onX={handleAlert} />
             <FilePond
-            server={{
-                process:{
-                    url:api.upload + '/s3',
-                    method: 'POST',
-                    onerror: setErrorMsg
-                }
-            }}
-            files={files}
-            ref={(ref) => {
-                pond = ref;
-            }}
-            required
-            acceptedFileTypes={["application/pdf", "image/*"]}
-            allowFileEncode
-            allowImageTransform
-            imagePreviewHeight={400}
-            imageCropAspectRatio={"1:1"}
-            imageResizeTargetWidth={100}
-            imageResizeTargetHeight={100}
-            imageResizeMode={"cover"}
-            imageTransformOutputQuality={50}
-            imageTransformOutputQualityMode="optional"
-            onpreparefile={handlePondFile}
-            onupdatefiles={(fileItems) => {
-                // Set current file objects to this.state
-                setFiles(
-                    fileItems.map((fileItem) => fileItem.file),
-                );
-            }}
-            instantUpload={false}
-            allowMultiple={true}
-            maxFiles={5}
-            
-            labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
-            labelFileProcessingError={errorMsg}
+                server={{
+                    process: {
+                        url: api.upload + '/s3',
+                        method: 'POST',
+                        onerror: setErrorMsg
+                    }
+                }}
+                files={files}
+                ref={(ref) => {
+                    pond = ref;
+                }}
+                required
+                acceptedFileTypes={["application/pdf", "image/*"]}
+                allowFileEncode
+                allowImageTransform
+                imagePreviewHeight={400}
+                imageCropAspectRatio={"1:1"}
+                imageResizeTargetWidth={100}
+                imageResizeTargetHeight={100}
+                imageResizeMode={"cover"}
+                imageTransformOutputQuality={50}
+                imageTransformOutputQualityMode="optional"
+                onpreparefile={handlePondFile}
+                onupdatefiles={(fileItems) => {
+                    // Set current file objects to this.state
+                    setFiles(
+                        fileItems.map((fileItem) => fileItem.file),
+                    );
+                }}
+                instantUpload={false}
+                allowMultiple={true}
+                maxFiles={5}
+
+                labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+                labelFileProcessingError={errorMsg}
             />
             <div>
-                <ButtonExample isLoading={isLoading} onSubmit={onSubmit}/>
+                <UploadButton disabled={files.length === 0} isLoading={isLoading} onSubmit={onSubmit} />
             </div>
-            
+
         </div>
     );
-  }
-  
+}

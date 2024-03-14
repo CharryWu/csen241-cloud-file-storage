@@ -35,13 +35,15 @@ app.add_middleware(
 @app.get('/')
 async def home(req: Request):
     print(req.headers)
-    
+
     return templates.TemplateResponse('home.html', {'request': req})
 
 
-@app.post('/api/upload/s3', name='s3_upload')
-async def upload(file: FileData = Depends(s3)) -> FileData:
-    print(file)
+@app.post('/api/upload/s3/{bucketName}', name='s3_upload')
+async def upload(bucketName, file: FileData = Depends(s3)) -> FileData:
+    print(bucketName, file)
+    # s3.client()
+    # s3.upload(bucketName, file)
     return file
 '''
 @app.post('/api/upload/{storage_type}', name="s3_upload")
