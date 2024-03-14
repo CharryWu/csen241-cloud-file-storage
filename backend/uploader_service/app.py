@@ -18,6 +18,7 @@ backend_port = int(os.environ.get("UPLOADER_BACKEND_PORT"))
 print("port: ", backend_port)
 
 origins = [
+    "*",
     "http://localhost.tiangolo.com",
     "https://localhost.tiangolo.com",
     "http://localhost",
