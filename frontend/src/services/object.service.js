@@ -3,7 +3,7 @@ import api from "../api"
 
 class ObjectService {
     get(_bucketName, user="") {
-        return axios.get(api.object + "/getObjects" + _bucketName );
+        return axios.get(api.object + "/getObjects/" + _bucketName );
     }
 }
 

@@ -22,14 +22,14 @@ const NavComponent = () => {
                     HOME
                   </Link>
                 </li>
-                <li className="nav-item">
-                  <Link className="nav-link active" to={"/bucket/" + userData.name}>
+                {/* <li className="nav-item">
+                  <Link className="nav-link active" to={"/bucket"}>
                     BUCKET
                   </Link>
-                </li>
+                </li> */}
                 <li className="nav-item">
                   <Link className="nav-link active" to="/object">
-                    OBJECT
+                    FILES
                   </Link>
                 </li>
                 <li className="nav-item">
@@ -46,7 +46,7 @@ const NavComponent = () => {
             </div>
             <div className="collapse navbar-collapse d-flex justify-content-center" id="navbarNav">
               <ul className="navbar-nav">
-                {isLoggedIn? 
+                {isLoggedIn?
                 <>
                   <li className="nav-item">
                     <Link className="nav-link active" onClick={signOut}>
@@ -67,8 +67,8 @@ const NavComponent = () => {
                   </li>
                 </>
               }
-                
-                
+
+
               </ul>
             </div>
           </div>

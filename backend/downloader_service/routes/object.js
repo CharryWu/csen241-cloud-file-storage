@@ -14,7 +14,7 @@ router.use((req, res, next) => {
     next();
 });
 
-router.get("/getObjects:bucketName", async (req, res) => {
+router.get("/getObjects/:bucketName", async (req, res) => {
     let { bucketName } = req.params;
 
     const params = {
@@ -22,7 +22,7 @@ router.get("/getObjects:bucketName", async (req, res) => {
         Delimiter: '/',
         Prefix: ''
     };
-    
+
     const data = await s3.listObjects(params).promise();
     console.log(data)
     return res.status(200).send(data);

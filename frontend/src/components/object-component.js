@@ -9,7 +9,6 @@ const ObjectComponent = () => {
     let [bucketName, setBucketName] = useState(null);
     let [objectData, setObjectData] = useState(null);
     let [bucketData, setBucketData] = useState(null);
-    let [bucketOwner, setBucketOwner] = useState(null);
     const userData = useSelector((state) => state.auth.userData);
   const navigate = useNavigate()
 
@@ -20,27 +19,31 @@ const ObjectComponent = () => {
         }
         BucketService.get()
         .then((res) => {
-            setBucketData(res.data['Buckets']);
-            setBucketOwner(res.data['Owner'])
+          setBucketData(res.data);
+          if (res.data['Name']) {
+            ObjectService.get(res.data['Name'])
+              .then((res) => {
+                  setObjectData(res.data['Contents']);
+              })
+              .catch((e) => {
+                  window.alert(e);
+              });
+          }
         })
         .catch((e) => {
-            window.alert(e);
+          window.alert(e);
         });
     }, []);
 
-    const handleBucketName = (e) => {
-        setBucketName(e.target.value);
-    };
-
-    const handleSearch = () => {
-        ObjectService.get(bucketName)
-            .then((res) => {
-                setObjectData(res.data['Contents']);
-            })
-            .catch((e) => {
-                window.alert(e);
-            });
-    };
+    // const handleSearch = () => {
+    //     ObjectService.get(bucketName)
+    //         .then((res) => {
+    //             setObjectData(res.data['Contents']);
+    //         })
+    //         .catch((e) => {
+    //             window.alert(e);
+    //         });
+    // };
 
 return (
     <div style={{ padding: "3rem" }} className="col-md-12">
@@ -52,38 +55,21 @@ return (
                     <tr>
                     <th>Name</th>
                     <th>CreationDate</th>
-                    <th>Owner</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {bucketData && bucketData.map((bucket) => (
+                    {bucketData && (
                         <tr>
-                        <td>{bucket["Name"]}</td>
-                        <td>{bucket["CreationDate"]}</td>
-                        <td>{bucketOwner.DisplayName}</td>
+                        <td>{bucketData["Name"]}</td>
+                        <td>{bucketData["CreationDate"]}</td>
                         </tr>
-                    ))}
+                    )}
                     </tbody>
                 </Table>
             </div>
         </div>
         <p></p>
         <div>
-            <div className="form-group">
-                <label>Bucket Name: </label>
-                <input
-                    onChange={handleBucketName}
-                    type="text"
-                    className="form-control"
-                />
-            </div>
-            <p></p>
-            <div>
-                <button onClick={handleSearch} className="btn btn-primary">
-                    <span>SEARCH</span>
-                </button>
-            </div>
-            <p></p>
             <div>
                 <Table striped bordered hover>
                     <tr>

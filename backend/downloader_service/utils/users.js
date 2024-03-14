@@ -10,19 +10,25 @@ AWS.config.update({
 });
 */
 const client = new AWS.CognitoIdentityServiceProvider({
-  region:  Credential.region,
+  region: Credential.region,
 
 });
-  /** snippet-start:[javascript.v3.cognito-idp.actions.ListUsers] */
-  const listUsers = (PoolId) => {
-    
+/** snippet-start:[javascript.v3.cognito-idp.actions.ListUsers] */
+const listUsers = (PoolId) => {
 
-    const input = { // ListUsersRequest
-        UserPoolId: PoolId, // required
-    };
-  
-    return client.getUser().promise();
+
+  const input = { // ListUsersRequest
+    UserPoolId: PoolId, // required
   };
-  /** snippet-end:[javascript.v3.cognito-idp.actions.ListUsers] */
-  
-  module.exports =  listUsers ;
+
+  return client.listUsers().promise();
+};
+/** snippet-end:[javascript.v3.cognito-idp.actions.ListUsers] */
+
+const getUserAttributes = (accessToken) => {
+
+  return client.getUser({ // ListUsersRequest
+    AccessToken: accessToken, // required
+  }).promise();
+}
+module.exports = { listUsers, getUserAttributes };

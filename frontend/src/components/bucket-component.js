@@ -7,20 +7,17 @@ import { useNavigate } from "react-router-dom";
 
 const BucketComponent = () => {
   let [bucketData, setBucketData] = useState(null);
-  let [bucketOwner, setBucketOwner] = useState(null);
   const userData = useSelector((state) => state.auth.userData);
   const navigate = useNavigate()
-  
+
   useEffect(() => {
-    if(userData.name == ""){
+    if (userData.name == "") {
       navigate("/login")
       return
     }
     BucketService.get("/" + userData.name)
       .then((res) => {
-        console.log(res.data);
-        setBucketData(res.data['Buckets']);
-        setBucketOwner(res.data['Owner'])
+        setBucketData(res.data);
       })
       .catch((e) => {
         window.alert(e);
@@ -30,24 +27,23 @@ const BucketComponent = () => {
   return (
     <div style={{ padding: "3rem" }} className="col-md-12">
       <div>
-          <Table striped bordered hover responsive>
+        <Table striped bordered hover responsive>
           <thead>
             <tr>
               <th>Name</th>
               <th>CreationDate</th>
               <th>Owner</th>
             </tr>
-            </thead>
-            <tbody>
-            {bucketData && bucketData.map((bucket) => (
-                <tr>
-                  <td>{bucket["Name"]}</td>
-                  <td>{bucket["CreationDate"]}</td>
-                  <td>{bucketOwner.DisplayName}</td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+          </thead>
+          <tbody>
+            {bucketData && (
+              <tr>
+                <td>{bucketData["name"]}</td>
+                <td>{bucketData["CreationDate"]}</td>
+              </tr>
+            )}
+          </tbody>
+        </Table>
       </div>
     </div>
   );
