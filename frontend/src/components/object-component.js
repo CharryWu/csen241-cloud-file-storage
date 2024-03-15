@@ -83,15 +83,23 @@ const ObjectComponent = () => {
         ShareService.getUsers().then((res) => {
             const currentUser = userPool.getCurrentUser()
             console.log(currentUser)
-            setListUserData(res.data.Users.filter(x => x.Username !== currentUser.username))
-            setShowShareModal(true)
-            setShareBucket(bucketName)
-            setShareObjectName(objectName)
+            let ll = res.data?.Users?.filter(x => x.Username !== currentUser.username)
+            if (ll && ll.length > 0) {
+                setListUserData(ll)
+                setShowShareModal(true)
+                console.log(ll)
+                setSelectedShareUser(ll[0].Username)
+                setShareBucket(bucketName)
+                setShareObjectName(objectName)
+            }
         })
     }
     const handleShare = async () => {
+        console.log(shareBucket, shareObjectName, selectedShareUser)
         if (shareBucket && shareObjectName && selectedShareUser) {
-            ShareService.post(selectedShareUser, bucketName, shareObjectName)
+            ShareService.post(selectedShareUser, bucketName, shareObjectName).then(res => {
+                setShowShareModal(false)
+            })
         }
     }
 

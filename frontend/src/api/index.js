@@ -6,5 +6,4 @@ export default {
     object: `http://${process.env.REACT_APP_DOWNLOADER_BACKEND_HOST}:${process.env.REACT_APP_DOWNLOADER_BACKEND_PORT}/api/object`,
     share_get: `http://${process.env.REACT_APP_UPLOADER_BACKEND_HOST}:${process.env.REACT_APP_UPLOADER_BACKEND_PORT}/api/share_get`,
     share: `http://${process.env.REACT_APP_UPLOADER_BACKEND_HOST}:${process.env.REACT_APP_UPLOADER_BACKEND_PORT}/api/share`,
-    upload: `http://${process.env.REACT_APP_UPLOADER_BACKEND_HOST}:${process.env.REACT_APP_UPLOADER_BACKEND_PORT}/api/get_share`,
 }
