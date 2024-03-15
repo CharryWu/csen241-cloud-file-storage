@@ -215,7 +215,7 @@ const ObjectComponent = () => {
                     </Table>
                 </div>
             </div>
-            <h3>Shared Files:</h3>
+            <h3>Files Shared with You:</h3>
             <div>
                 <div>
                     <Table striped bordered hover>
